@@ -54,6 +54,8 @@ header_t *get_free_block(size_t size);
  */
 void *rent_free(size_t size);
 
+void *tribe_rent_free(size_t num, size_t nsize);
+
 /**
  * @brief Deallocates memory of given size
  *
