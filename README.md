@@ -36,9 +36,10 @@ int main() {
 
     ptr1 = rent_free(<size you want>);// can return NULL if allocator failed
 
-    *pr1 = 12412;// use point by dereferencing the pointer
+    *ptr1 = 12412;// use point by dereferencing the pointer
 
-    //TODO: freeing memory isn't yet implemented
+
+    yeet(ptr1)// free the memory allocated
 }
 
 ```
