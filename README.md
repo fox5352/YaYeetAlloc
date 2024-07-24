@@ -19,6 +19,13 @@ A basic memory allocator
     make
 ```
 
+### how to install
+
+in the build directory
+```bash
+    sudo make install
+```
+
 
 ### to run tests
 

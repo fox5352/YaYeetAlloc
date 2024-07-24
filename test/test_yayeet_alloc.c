@@ -2,7 +2,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "yayeet_alloc.h"
+//#include "../include/yayeet_alloc.h"
+#include <yayeet_alloc.h>
 
 void test_allocation_and_deallocation(){
     // testing normal memory allocation
@@ -42,6 +43,22 @@ void test_allocation_and_deallocation(){
     yeet(ptr3_b);
 
     printf("YaYeetAlloc unit passed\n");
+
+
+    void *ptr1_c = tribe_rent_free(4, 100);
+    assert(ptr1_c != NULL);
+
+    void *ptr2_c = tribe_rent_free(4, 200);
+    assert(ptr2_c != NULL);
+
+    yeet(ptr1_c);
+    yeet(ptr2_c);
+
+    void *ptr3_c = tribe_rent_free(4, 100);
+    assert(ptr3_c != NULL);
+    assert(ptr3_c == ptr1_c || ptr3_c == ptr2_c);
+
+    yeet(ptr3_c);
 }
 
 void test_program_break() {

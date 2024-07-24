@@ -1,4 +1,5 @@
-#include "yayeet_alloc.h"
+#include "../include/yayeet_alloc.h"
+#include <string.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -118,6 +119,24 @@ void *rent_free(size_t size) {
 	// Return a pointer to the usable memory, which starts right after the header
 	// The '+1' here moves the pointer past the header structure
 	return (void *)(header + 1);
+}
+
+void *tribe_rent_free(size_t num, size_t nsize) {
+	size_t size;
+	void *block;
+
+	if (!num || !nsize) return NULL;
+
+	size = num * nsize;
+	/* check mul overflow */
+	if (nsize != size / num) return NULL;
+
+	block = rent_free(size);
+	if (!block) return NULL;
+
+	memset(block, 0, size);
+
+	return block;
 }
 
 /**
