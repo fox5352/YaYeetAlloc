@@ -14,15 +14,13 @@ int main() {
 
     free(ptr1);
 
-    assert(ptr1 == NULL && "Memory allocation failed to let go");
-
     // testing rent_free memory allocation
-
-    int *ptr2 = NULL;
+   int *ptr2 = NULL;
     ptr2 = rent_free(125);
     assert(ptr2 != NULL && "Memory allocation failed on stock rent_free");
     *ptr2 = 125;
     assert(*ptr2 == 125);
 
-    //TODO: implement free testing for ya_yeet_alloc
+
+    // TODO: implement free testing for ya_yeet_alloc
 }
