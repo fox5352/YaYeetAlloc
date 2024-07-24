@@ -54,4 +54,6 @@ header_t *get_free_block(size_t size);
  */
 void *rent_free(size_t size);
 
+void yeet(void *block);
+
 #endif

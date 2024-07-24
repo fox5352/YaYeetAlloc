@@ -1,5 +1,8 @@
 #include "../include/yayeet_alloc.h"
+#include <pthread.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <unistd.h>
 
 /** Global mutex for thread-safe operations */
 pthread_mutex_t global_lock;
@@ -50,6 +53,27 @@ void *rent_free(size_t size) {
 	// return null if there is no size
 	if(!size) return NULL;
 
+	// if negitive size or bigger than max memory left
+	long pages = sysconf(_SC_PHYS_PAGES);
+	long page_size = sysconf(_SC_PAGESIZE);
+
+	 if (pages == -1 || page_size == -1) {
+		// sysconf failed, handle error
+		return NULL;
+	}
+
+	// Check for potential overflow
+	if (size > (SIZE_MAX / (size_t)page_size)) {
+		return NULL;
+	}
+
+	size_t max_size = (size_t)pages * (size_t)page_size;
+
+	if (size == 0 || size > max_size) {
+		return NULL;
+	}
+
+
 	// lock the global mutex before accessing the shared data structure
 	pthread_mutex_lock(&global_lock);
 
@@ -94,4 +118,42 @@ void *rent_free(size_t size) {
 	// Return a pointer to the usable memory, which starts right after the header
 	// The '+1' here moves the pointer past the header structure
 	return (void *)(header + 1);
+}
+
+void yeet(void *block) {
+	header_t *header, *tmp;
+	void *programbreak;
+
+	if (!block) return;
+
+	pthread_mutex_lock(&global_lock);
+	header = (header_t *)block - 1;// step back to the header structure instead of variable
+
+	programbreak = sbrk(0);// get current addr of programbreak
+	// cast block + header.s.size to char is same as the end of the block
+	if ((char *)block + header->s.size == programbreak) {
+		// if it is only one chain long then remove it
+		if (head == tail) {
+			head = tail = NULL;
+		} else {
+		// move down the chain until we reach then end of block and then remove it
+			tmp = head;
+			while (tmp) {
+				if (tmp->s.next == tail) {
+					tmp->s.next = NULL;
+					tail = tmp;
+				}
+				tmp = tmp->s.next;// step
+			}
+		}
+
+		// explain this 3 line please
+		sbrk(0 - sizeof(header_t) - header->s.size);// decrease header_t + block
+		pthread_mutex_unlock(&global_lock);
+		return;
+	}
+
+	// sets curr block to free
+	header->s.is_free = 1;
+	pthread_mutex_unlock(&global_lock);
 }
