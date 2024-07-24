@@ -1,4 +1,4 @@
-#include "../include/yayeet_alloc.h"
+#include "yayeet_alloc.h"
 #include <pthread.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -128,7 +128,6 @@ void *rent_free(size_t size) {
  * @param block the pointer to the block to deallocate
  * @return void
  */
-
 void yeet(void *block) {
 	header_t *header, *tmp;
 	void *programbreak;
