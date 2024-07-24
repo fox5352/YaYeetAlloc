@@ -54,6 +54,14 @@ header_t *get_free_block(size_t size);
  */
 void *rent_free(size_t size);
 
+/**
+ * @brief Deallocates memory of given size
+ *
+ * This function deallocates the given block of memory. It ensures thread-safety
+ *
+ * @param block the pointer to the block to deallocate
+ * @return void
+ */
 void yeet(void *block);
 
 #endif
