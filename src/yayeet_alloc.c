@@ -121,6 +121,14 @@ void *rent_free(size_t size) {
 	return (void *)(header + 1);
 }
 
+/**
+* @brief Allocate memory for a given size.
+*
+* @param num The number of chucks to allocate
+* @param nsize The size of the chuck of memory to allocate
+*
+* @return void* Pointer to the allocated memory, or NULL if allocation fails
+*/
 void *tribe_rent_free(size_t num, size_t nsize) {
 	size_t size;
 	void *block;
@@ -137,6 +145,25 @@ void *tribe_rent_free(size_t num, size_t nsize) {
 	memset(block, 0, size);
 
 	return block;
+}
+
+void *run_it_back_rent_free(void *block, size_t size) {
+	header_t *header;
+	void *ret;
+
+	if (!block || !size) return rent_free(size);
+
+	header = (header_t *)block - 1;// gets the head of the block
+
+	if(header->s.size >= size) return block; // returns the block if the block is equal or larger than size given
+
+	// grabs a new block of size then copies the block into ret and returns it
+	ret = rent_free(size);	if (ret) {
+		memcpy(ret, block, header->s.size);
+		yeet(block);
+	}
+
+	return ret;
 }
 
 /**

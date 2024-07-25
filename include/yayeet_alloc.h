@@ -54,7 +54,21 @@ header_t *get_free_block(size_t size);
  */
 void *rent_free(size_t size);
 
+/**
+* @brief Allocate memory for a given size.
+*
+* @param num The number of chucks to allocate
+* @param nsize The size of the chuck of memory to allocate
+*
+* @return void* Pointer to the allocated memory, or NULL if allocation fails
+*/
 void *tribe_rent_free(size_t num, size_t nsize);
+
+
+/**
+* @brief
+*/
+void *run_it_back_rent_free(void *block, size_t size);
 
 /**
  * @brief Deallocates memory of given size
