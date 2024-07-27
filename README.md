@@ -1,15 +1,19 @@
 # YaYeetAlloc
-A basic memory allocator
+
+A basic memory allocator for the memes, it only works in linux
 
 ## prerequisites:
 - gcc compiler
 - cmake isntalled
 
+
+### how to install Cmake
 ``` bash
     sudo apt install cmake
 ```
 
-### how to build
+## how to build
+
 ``` bash
     mkdir build
     cd build
@@ -19,24 +23,24 @@ A basic memory allocator
     make
 ```
 
-### how to install
+## how to install
 
-in the build directory
+In the build directory
 ```bash
     sudo make install
 ```
 
-
-### to run tests
+## to run tests
 
 in the build directory run:
 ``` bash
     ctest
 ```
+
 to include on you c project
 
 ``` c
-#include "yayeet_alloc.h"// include header file in c project
+#include "<yayeet_alloc.h>"// include header file in c project
 
 int main() {
     int *ptr1 = NULL;// initialize a pointer
